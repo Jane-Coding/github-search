@@ -6,16 +6,21 @@ import {
   Typography,
   TextField,
   Container,
-  Table,
 } from "@mui/material";
 
 import RepositoriesTable from "./RepositoriesTable";
 
-import { useState } from "react";
-// import './App.css'
+import { useLazyGetRepositoriesQuery } from "./query";
+
+import { useEffect, useState } from "react";
 
 function App() {
   const [searchWord, setSearchWord] = useState("");
+  const [trigger, result] = useLazyGetRepositoriesQuery();
+  const { data, error, isLoading, isSuccess } = result;
+  
+  useEffect(() => {
+  }, []);
 
   function showWord(word: string) {
     console.log(word);

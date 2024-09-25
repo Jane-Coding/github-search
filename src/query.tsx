@@ -21,29 +21,15 @@ export const api = createApi({
   endpoints: (builder) => ({
     getRepositories: builder.query({
       query: () => ({
-        body: gql`
+        document: gql`
           query {
             repository(owner: "octocat", name: "Hello-World") {
-              issues(last: 5, states: CLOSED) {
-                edges {
-                  node {
-                    title
-                    url
-                    labels(first: 5) {
-                      edges {
-                        node {
-                          name
-                        }
-                      }
-                    }
-                  }
-                }
-              }
+              url
             }
           }
         `,
       }),
-      transformResponse: (response) => response,
+      transformResponse: (response: {data: {repository: {url: string}}}) => response.repository,
     }),
   }),
 });

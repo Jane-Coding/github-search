@@ -15,15 +15,15 @@ import { useLazyGetRepositoriesQuery } from "./query";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [searchWord, setSearchWord] = useState("");
-  const [trigger, result] = useLazyGetRepositoriesQuery();
+  const [searchWord, setSearchWord] = useState("Hello World");
+  const [trigger, result] = useLazyGetRepositoriesQuery({});
   const { data, error, isLoading, isSuccess } = result;
-  
-  useEffect(() => {
-  }, []);
+
+  useEffect(() => {}, []);
 
   function showWord(word: string) {
-    console.log(word);
+    console.log(trigger(word, false));
+    console.log(result);
   }
 
   return (
@@ -51,6 +51,8 @@ function App() {
       </Box>
       <Container sx={{ mt: "70px" }}>
         <RepositoriesTable />
+        {isLoading && <Typography variant="h1">Loading</Typography>}
+        {data && <Typography>{data.url}</Typography>}
       </Container>
     </>
   );

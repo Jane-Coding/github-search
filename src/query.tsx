@@ -20,16 +20,31 @@ export const api = createApi({
 
   endpoints: (builder) => ({
     getRepositories: builder.query({
-      query: () => ({
+      query: (searchWord) => ({
         document: gql`
-          query {
-            repository(owner: "octocat", name: "Hello-World") {
-              url
+          query ($searchWord: String!) {
+            search(query: $searchWord, type: REPOSITORY, first: 2) {
+              edges {
+                node {
+                  ... on Repository {
+                    name
+                    primaryLanguage {
+                      name
+                    }
+                    forkCount
+                    stargazerCount
+                    updatedAt
+                  }
+                }
+              }
             }
           }
         `,
+        variables: {
+          searchWord
+        }
       }),
-      transformResponse: (response: {data: {repository: {url: string}}}) => response.repository,
+      transformResponse: (response) => response.search.edges,
     }),
   }),
 });

@@ -14,15 +14,17 @@ import { useLazyGetRepositoriesQuery } from "./query";
 
 import { useEffect, useState } from "react";
 
+import transformObject from "./cleanGraphQl";
+
 function App() {
   const [searchWord, setSearchWord] = useState("");
   const [trigger, result] = useLazyGetRepositoriesQuery({});
-  const { data, error, isLoading, isSuccess } = result;
+  const { data, isLoading } = result;
 
   useEffect(() => {}, []);
-  
+
   async function showWord(word: string) {
-    await trigger(word, false).unwrap()
+    await trigger(word, false).unwrap();
   }
 
   return (
@@ -49,10 +51,8 @@ function App() {
         </AppBar>
       </Box>
       <Container sx={{ mt: "70px" }}>
-        <RepositoriesTable />
         {isLoading && <Typography variant="h1">Loading</Typography>}
-        {isSuccess && <Typography variant="h1">Success</Typography>}
-        {data && data.map((el) => <Typography>{el.node.name}</Typography>)}
+        {data && <RepositoriesTable repositories={transformObject(data)} />}
       </Container>
     </>
   );

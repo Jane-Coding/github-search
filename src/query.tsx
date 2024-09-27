@@ -23,7 +23,7 @@ export const api = createApi({
       query: (searchWord) => ({
         document: gql`
           query ($searchWord: String!) {
-            search(query: $searchWord, type: REPOSITORY, first: 2) {
+            search(query: $searchWord, type: REPOSITORY, first: 25) {
               edges {
                 node {
                   ... on Repository {
@@ -44,7 +44,7 @@ export const api = createApi({
           searchWord
         }
       }),
-      transformResponse: (response) => response.search.edges,
+      transformResponse: (response) => response.search,
     }),
   }),
 });
